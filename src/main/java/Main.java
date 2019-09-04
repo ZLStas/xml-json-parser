@@ -143,30 +143,21 @@ public class Main {
         InputStream patientStream = new FileInputStream(initialFile);
 
 
-        Patient patient  = (Patient) ctx.newJsonParser().parseResource(patientStream);
+        Patient patient = (Patient) ctx.newJsonParser().parseResource(patientStream);
 
-
-
-        System.out.println("**************************************patientInJSON**********************************************");
         String patientInJSON = ctx.newJsonParser().encodeResourceToString(patient);
 
-        FileWriter fw=new FileWriter("src/resources/Parsed.json");
+        FileWriter fw = new FileWriter("src/resources/Parsed.json");
         fw.write(patientInJSON);
         fw.close();
 
-        Patient patientDecoded  = (Patient) ctx.newJsonParser().parseResource(patientInJSON);
-
         System.out.println("*******************************************json***************************************");
-
         System.out.println(json);
 
-        System.out.println("***************************************patientInXML*****************************************");
 
+        System.out.println("***************************************patientInXML*****************************************");
         String patientInXML = ctx.newXmlParser().encodeResourceToString(patient);
         System.out.println(patientInXML);
-
-
-
 
 
     }
