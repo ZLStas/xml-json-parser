@@ -1,35 +1,27 @@
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
+import org.hl7.fhir.dstu3.model.Bundle;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
-        FhirContext ctx = FhirContext.forDstu2();
-
-        File initialFile = new File("src/resources/PatientSTU3.json");
-        InputStream patientStream = new FileInputStream(initialFile);
+        FhirContext ctx = FhirContext.forDstu3();
 
 
-        Patient patient = (Patient) ctx.newJsonParser().parseResource(patientStream);
+        String rededBundle = new String(Files.readAllBytes(Paths.get("src/resources/Albert.json")));
 
-        String patientInJSON = ctx.newJsonParser().encodeResourceToString(patient);
+        Bundle bundle = ctx.newJsonParser().parseResource(Bundle.class, rededBundle);
 
-        FileWriter fw = new FileWriter("src/resources/Parsed.json");
-        fw.write(patientInJSON);
+        String Pxml = ctx.newXmlParser().encodeResourceToString(bundle);
+
+        FileWriter fw = new FileWriter("src/resources/Parsed.xml");
+        fw.write(Pxml);
         fw.close();
-
-        System.out.println("***************************************patientInJSON*****************************************");
-        System.out.println(patientInJSON);
-
-        System.out.println("***************************************patientInXML*****************************************");
-        String patientInXML = ctx.newXmlParser().encodeResourceToString(patient);
-        System.out.println(patientInXML);
 
 
     }
